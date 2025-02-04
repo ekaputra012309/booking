@@ -3,17 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
-use App\Models\PermintaanModel;
 use App\Models\CompanyProfile;
-use App\Models\Barang;
-use App\Models\PurchaseOrder;
-use App\Models\BarangMasukDetail;
-use App\Models\BarangKeluarDetail;
-use App\Models\BarangBrokenDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Transaksi;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class Backend extends Controller
@@ -32,26 +25,9 @@ class Backend extends Controller
         $today = Carbon::today();
         $monthlyStart = $today->copy()->startOfMonth();
         $yearlyStart = $today->copy()->startOfYear();
-
-        $barang = Barang::count();
-        $barang_masuk = BarangMasukDetail::whereDate('created_at', $today)->sum('qty');
-        $barang_keluar = BarangKeluarDetail::whereDate('created_at', $today)->sum('qty');
-        $barang_broken = BarangBrokenDetail::whereDate('created_at', $today)->sum('qty');
-
+        
         $data = [
-            'title' => 'Dashboard | ',
-            'barang' => $barang == '' ? 0 : $barang,
-            'barang_masuk' => $barang_masuk == '' ? 0 : $barang_masuk,
-            'barang_keluar' => $barang_keluar == '' ? 0 : $barang_keluar,  
-            'barang_broken' => $barang_broken == '' ? 0 : $barang_broken,  
-            'databarang' => Barang::with('satuan')->whereColumn('stok','<=', 'limit')->get(),
-            'datapurchase_order' => PurchaseOrder::with(['items.barang.satuan'])
-                                    ->where(function($query) {
-                                        $query->where('status_order', '!=', 'Approved')
-                                            ->orWhereNull('status_order');
-                                    })
-                                    ->orderBy('created_at', 'desc')
-                                    ->get(),
+            'title' => 'Dashboard | ',            
         ];
         // dd($data['databarang']);
         return view('backend.dashboard', $data);

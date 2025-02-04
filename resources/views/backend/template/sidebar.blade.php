@@ -39,59 +39,16 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('barang.index') }}" class="nav-link {{ request()->routeIs('barang.index') ? 'active' : '' }}">
-                                <p>Barang</p>
+                            <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                                <p>Lantai</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('satuan.index') }}" class="nav-link {{ request()->routeIs('satuan.index') ? 'active' : '' }}">
-                                <p>Satuan</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('customer.index') }}" class="nav-link {{ request()->routeIs('customer.index') ? 'active' : '' }}">
-                                <p>Customer</p>
+                            <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                                <p>Meja</p>
                             </a>
                         </li>
                     </ul>
-                </li>
-                @endif
-
-                <li class="nav-header">Transaksi</li>
-
-                <li class="nav-item">
-                    <a href="{{ route('purchase_order.index') }}" class="nav-link {{ request()->routeIs('purchase_order.index') ? 'active' : '' }}">                        
-                        <i class="nav-icon fas fa-shopping-cart"></i>
-                        <p>Purchase Order (PO)</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('barang_masuk.index') }}" class="nav-link {{ request()->routeIs('barang_masuk.index') ? 'active' : '' }}">                        
-                        <i class="nav-icon fas fa-download"></i>
-                        <p>Barang Masuk</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('barang_keluar.index') }}" class="nav-link {{ request()->routeIs('barang_keluar.index') ? 'active' : '' }}">                        
-                        <i class="nav-icon fas fa-upload"></i>
-                        <p>Barang Keluar</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('barang_broken.index') }}" class="nav-link {{ request()->routeIs('barang_broken.index') ? 'active' : '' }}">                        
-                        <i class="nav-icon fas fa-unlink"></i>
-                        <p>Barang Broken</p>
-                    </a>
-                </li>
-                
-                @if (in_array($role, ['superadmin', 'owner', 'admin']))
-                <li class="nav-header">Laporan</li>
-
-                <li class="nav-item">
-                    <a href="{{ route('transaksi.laporan') }}" class="nav-link {{ request()->routeIs('transaksi.laporan') ? 'active' : '' }}">                        
-                        <i class="nav-icon fas fa-list-alt"></i>
-                        <p>Laporan Transaksi</p>
-                    </a>
                 </li>
                 @endif
 
@@ -107,6 +64,11 @@
                         <li class="nav-item">
                             <a href="{{ route('privilage.index') }}" class="nav-link {{ request()->routeIs('privilage.index') ? 'active' : '' }}">
                                 <p>Privilage</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('role.index') }}" class="nav-link {{ request()->routeIs('role.index') ? 'active' : '' }}">
+                                <p>Role</p>
                             </a>
                         </li>
                         <li class="nav-item">

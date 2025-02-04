@@ -43,12 +43,14 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'phone' => 'string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|confirmed|min:8',
         ]);
 
         $user = [
             'name' => $request->name,
+            'phone' => $request->phone,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ];
@@ -79,12 +81,14 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'phone' => 'string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             // 'password' => 'nullable|string|confirmed|min:8',
         ]);
 
         $user = User::findOrFail($id);
         $user->name = $request->name;
+        $user->phone = $request->phone;
         $user->email = $request->email;
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
