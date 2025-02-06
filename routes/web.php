@@ -7,6 +7,8 @@ use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\PrivilageController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\StatusBookingController;
+use App\Http\Controllers\Backend\LantaiController;
+use App\Http\Controllers\Backend\MejaController;
 
 // Route::get('/', function () {
 //     return ['Laravel' => app()->version()];
@@ -30,6 +32,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('privilage', PrivilageController::class); //privilage
     Route::resource('role', RoleController::class); //role
     Route::resource('statusbooking', StatusBookingController::class); //statusbooking
+    Route::resource('lantai', LantaiController::class); //lantai
+    Route::resource('meja', MejaController::class); //meja
 });
 
 require __DIR__.'/auth.php';

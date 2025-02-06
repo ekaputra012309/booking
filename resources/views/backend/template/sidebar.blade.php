@@ -39,7 +39,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                            <a href="{{ route('lantai.index') }}" class="nav-link {{ request()->routeIs('lantai.index') ? 'active' : '' }}">
                                 <p>Lantai</p>
                             </a>
                         </li>
