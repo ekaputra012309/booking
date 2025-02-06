@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\PrivilageController;
 use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\StatusBookingController;
 
 // Route::get('/', function () {
 //     return ['Laravel' => app()->version()];
@@ -28,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user/{id}/reset-password', [UserController::class, 'resetPassword'])->name('user.resetPassword');
     Route::resource('privilage', PrivilageController::class); //privilage
     Route::resource('role', RoleController::class); //role
+    Route::resource('statusbooking', StatusBookingController::class); //statusbooking
 });
 
 require __DIR__.'/auth.php';

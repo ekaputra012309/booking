@@ -66,11 +66,22 @@
                                 <p>Privilage</p>
                             </a>
                         </li>
+                        @endif
+
+                        @if (in_array($role, ['superadmin']))
                         <li class="nav-item">
                             <a href="{{ route('role.index') }}" class="nav-link {{ request()->routeIs('role.index') ? 'active' : '' }}">
                                 <p>Role</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('statusbooking.index') }}" class="nav-link {{ request()->routeIs('statusbooking.index') ? 'active' : '' }}">
+                                <p>Status Booking</p>
+                            </a>
+                        </li>
+                        @endif
+
+                        @if (in_array($role, ['superadmin']))
                         <li class="nav-item">
                             <a href="{{ route('user.index') }}" class="nav-link {{ request()->routeIs('user.index') ? 'active' : '' }}">
                                 <p>Manage User</p>
