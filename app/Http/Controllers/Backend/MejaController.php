@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Meja;
 use App\Models\Lantai;
-use App\Models\Status;
+use App\Models\StatusBooking;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class MejaController extends Controller
@@ -14,16 +14,23 @@ class MejaController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'meja | ',
-            'datameja' => Meja::all(),
+            'title' => 'Meja | ',
+            'datameja' => Meja::with('user', 'lantai', 'status')
+                                ->get()
+                                ->groupBy('lantai_id'),
         ];
+        // dd($data['datameja']);
         return view('backend.meja.index', $data);
     }
 
     public function create()
     {
+        $lantai = Lantai::all();
+        $status = StatusBooking::all();
         $data = [
-            'title' => 'Add meja | ',
+            'title' => 'Add Meja | ',
+            'datalantai' => $lantai,
+            'datastatus' => $status,
         ];
         return view('backend.meja.create', $data);
     }
@@ -32,18 +39,21 @@ class MejaController extends Controller
     {
         $request->validate([
             'nama_meja' => 'required|string|max:255',
+            'harga' => 'required|numeric',
+            'lantai_id' => 'required|exists:lantai,id',
+            'status_id' => 'required|exists:status_booking,id',
             'user_id' => 'required|exists:users,id', // Adjust as necessary
         ]);
-
-        Meja::create($request->all());
-        Alert::success('Success', 'meja created successfully.')->autoClose(2000);
-        return redirect()->route('meja.index');
+        dd($request->all());
+        // Meja::create($request->all());
+        // Alert::success('Success', 'meja created successfully.')->autoClose(2000);
+        // return redirect()->route('meja.index');
     }
 
     public function show(Meja $meja)
     {
         $data = [
-            'title' => 'View meja | ',
+            'title' => 'View Meja | ',
             'meja' => $meja,
         ];
         return view('backend.meja.show', $data);
@@ -51,8 +61,12 @@ class MejaController extends Controller
 
     public function edit(Meja $meja)
     {
+        $lantai = Lantai::all();
+        $status = StatusBooking::all();
         $data = [
-            'title' => 'Edit meja | ',
+            'title' => 'Edit Meja | ',
+            'datalantai' => $lantai,
+            'datastatus' => $status,
             'meja' => $meja,
         ];
         return view('backend.meja.edit', $data);
@@ -62,6 +76,9 @@ class MejaController extends Controller
     {
         $request->validate([
             'nama_meja' => 'required|string|max:255',
+            'harga' => 'required|numeric',
+            'lantai_id' => 'required|exists:lantai,id',
+            'status_id' => 'required|exists:status_booking,id',
             'user_id' => 'required|exists:users,id',
         ]);
 
@@ -78,5 +95,14 @@ class MejaController extends Controller
         // Alert::success('Success', 'meja deleted successfully.');
 
         // return redirect()->route('meja.index');
+    }
+
+    public function checkNamaMeja(Request $request)
+    {
+        $exists = Meja::where('lantai_id', $request->lantai_id)
+                    ->where('nama_meja', $request->nama_meja)
+                    ->exists();
+
+        return response()->json(!$exists);  // Return true if not exists (valid), false if it exists
     }
 }

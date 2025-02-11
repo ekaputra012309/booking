@@ -24,6 +24,8 @@ Route::get('/get-role-name', [PrivilageController::class, 'getRoleName'])->name(
 Route::get('/company-profile', [Backend::class, 'editCompany'])->name('companyProfile');
 Route::put('/company-profile/update', [Backend::class, 'updateCompany'])->name('companyProfile.update');
 
+Route::get('/meja/check-nama-meja', [MejaController::class, 'checkNamaMeja'])->name('meja.checkNamaMeja');
+
 Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 

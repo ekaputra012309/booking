@@ -23,6 +23,6 @@ class Meja extends Model
 
     public function status()
     {
-        return $this->belongsTo(StatusBooking::class);
+        return $this->belongsTo(StatusBooking::class, 'status_id', 'id');
     }
 }
