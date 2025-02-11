@@ -19,6 +19,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::get('/', [Backend::class, 'signin'])->name('signin');
+Route::get('/register', [Backend::class, 'signup'])->name('signup');
+
+Route::post('/user/regis', [UserController::class, 'regis'])->name('user.regis');
+Route::get('/user/customer', [UserController::class, 'customer'])->name('user.customer');
+
 Route::get('/get-role-name', [PrivilageController::class, 'getRoleName'])->name('get.role.name');
 
 Route::get('/company-profile', [Backend::class, 'editCompany'])->name('companyProfile');
@@ -28,7 +33,7 @@ Route::get('/meja/check-nama-meja', [MejaController::class, 'checkNamaMeja'])->n
 
 Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-
+    
     Route::resource('user', UserController::class); //user
     Route::get('/user/{id}/reset-password', [UserController::class, 'resetPassword'])->name('user.resetPassword');
     Route::resource('privilage', PrivilageController::class); //privilage

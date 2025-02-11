@@ -43,26 +43,35 @@
                                             <select name="lantai_id" id="lantai_id" class="form-control select2bs4">
                                                 <option value="">Pilih</option>
                                                 @foreach ($datalantai as $lt)
-                                                    <option value="{{ $lt->id }}">{{ $lt->nama_lantai }}</option>
+                                                    <option value="{{ $lt->id }}" {{ old('lantai_id') == $lt->id ? 'selected' : '' }}>{{ $lt->nama_lantai }}</option>
                                                 @endforeach
                                             </select>
+                                            @error('lantai_id')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
 
                                     <div class="col-md-4 col-12">
                                         <div class="form-group mandatory">
                                             <label for="nama_meja">Nama Meja</label>
-                                            <input type="text" class="form-control" id="nama_meja" name="nama_meja" placeholder="Nama Meja" required>
+                                            <input type="text" class="form-control" id="nama_meja" name="nama_meja" placeholder="Nama Meja" value="{{ old('nama_meja') }}" required>
+                                            @error('nama_meja')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
 
                                     <div class="col-md-4 col-12">
                                         <div class="form-group mandatory">
                                             <label for="harga">Harga</label>
-                                            <input type="number" class="form-control" id="harga" name="harga" placeholder="Harga" required>
-                                            <input type="hidden" class="form-control" id="status_id" name="status_id" value="1">
+                                            <input type="number" class="form-control" id="harga" name="harga" placeholder="Harga" value="{{ old('harga') }}" required>
+                                            @error('harga')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
-                                    </div>                                  
+                                    </div>
+                               
                                 </div>
                             </div>
 

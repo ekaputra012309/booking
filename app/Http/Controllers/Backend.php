@@ -20,6 +20,15 @@ class Backend extends Controller
         return view('backend.login', $data);
     }
 
+    public function signup()
+    {
+        $data = array(
+            'title' => 'Register | ',
+            'companyProfile' => CompanyProfile::firstOrFail(),
+        );
+        return view('backend.register', $data);
+    }
+
     public function dashboard()
     {
         $today = Carbon::today();

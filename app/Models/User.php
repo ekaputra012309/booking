@@ -51,4 +51,10 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function privilages()
+    {
+        return $this->hasMany(Privilage::class, 'user_id');
+    }
+
+
 }

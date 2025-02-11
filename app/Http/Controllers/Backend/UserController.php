@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Privilage;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -16,6 +17,9 @@ class UserController extends Controller
 
         $users = User::where('id', '!=', $authUserId)
             ->where('id', '!=', 1)
+            ->whereDoesntHave('privilages', function ($query) {
+                $query->where('role_id', 4);
+            })
             ->get();
 
         $data = array(
@@ -30,6 +34,23 @@ class UserController extends Controller
         return view('backend.user.index', $data);
     }
 
+    public function customer()
+    {
+        $authUserId = auth()->id();
+
+        $users = User::where('id', '!=', $authUserId)
+            ->where('id', '!=', 1)
+            ->whereHas('privilages', function ($query) {
+                $query->where('role_id', 4);
+            })
+            ->get();
+
+        $data = array(
+            'title' => 'Customer | ',
+            'datauser' => $users,
+        );
+        return view('backend.user.customer', $data);
+    }
 
     public function create()
     {
@@ -121,5 +142,39 @@ class UserController extends Controller
 
         Alert::success('Success', 'password reset successfully.');
         return redirect()->route('user.index');
+    }
+
+    public function regis(Request $request)
+    {
+        $request->validate([
+            'name1' => 'required|string|max:255',
+            'phone1' => 'string|max:255',
+            'email1' => 'required|string|email|max:255|unique:users,email',
+            'password1' => 'required|string|min:8',
+        ]);
+
+        User::create([
+            'name' => $request->name1,
+            'phone' => $request->phone1,
+            'email' => $request->email1,
+            'password' => Hash::make($request->password1),
+        ]);
+
+        $user = User::where('email', $request->email1)->first();
+
+        if ($user) {
+            // Insert into Privilage table
+            $prv = [
+                'role_id' => 4,
+                'user_id' => $user->id,
+            ];
+            Privilage::create($prv);
+        }
+
+        Alert::success('Success', 'Register customer successfully.')
+            ->persistent(true)
+            ->html('<b>Now you can login!!</b>')
+            ->autoClose(5000);
+        return redirect()->route('signin');
     }
 }

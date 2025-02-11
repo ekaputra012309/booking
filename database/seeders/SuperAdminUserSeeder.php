@@ -66,6 +66,13 @@ class SuperAdminUserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'nama_role' => 'Customer',
+                'kode_role' => 'customer',
+                'user_id'   => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
         DB::table('privilages')->insert([
@@ -84,6 +91,21 @@ class SuperAdminUserSeeder extends Seeder
             [
                 'role_id' => 3,
                 'user_id' => 3,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+
+        DB::table('status_booking')->insert([
+            [
+                'nama_status' => 'Available',
+                'user_id' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama_status' => 'Not Available',
+                'user_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

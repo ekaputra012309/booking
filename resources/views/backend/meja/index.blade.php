@@ -37,7 +37,8 @@
                             <table id="example1" class="table table-bordered table-striped w-100">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th style="width: 30px">Aksi</th>
+                                        <th style="width: 20px">No</th>
                                         <th>Nama Lantai</th>
                                         <th>No Meja</th>
                                         <th>Harga</th>
@@ -45,20 +46,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php $no = 1 @endphp
                                     @foreach ($datameja as $meja)
                                     <tr>
+                                        
                                         <td>
-                                            <a class="btn btn-xs btn-primary" href="{{ route('meja.edit', $meja[0]->id ?? '-') }}">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </a> <br>
-                                            <a class="btn btn-xs btn-danger" href="{{ route('meja.destroy', $meja[0]->id ?? '-') }}" data-confirm-delete="true">
-                                                <i class="fas fa-trash"></i> Delete
+                                            <a class="btn btn-xs btn-primary" href="{{ route('meja.edit', $meja->id ?? '-') }}">
+                                                <i class="fas fa-edit"></i>
+                                            </a> 
+                                            <a class="btn btn-xs btn-danger" href="{{ route('meja.destroy', $meja->id ?? '-') }}" data-confirm-delete="true">
+                                                <i class="fas fa-trash"></i>
                                             </a>
                                         </td>
-                                        <td>{{ $meja[0]->lantai->nama_lantai ?? 'N/A' }}</td>
-                                        <td>{{ $meja[0]->nama_meja ?? 'N/A' }}</td>
-                                        <td>{{ $meja[0]->harga ?? 'N/A' }}</td>
-                                        <td>{{ $meja[0]->status->nama_status ?? 'N/A' }}</td>
+                                        <td>{{ $no++ }}</td>
+                                        <td>{{ $meja->lantai->nama_lantai ?? 'N/A' }}</td>
+                                        <td>{{ $meja->nama_meja ?? 'N/A' }}</td>
+                                        <td>{{ $meja->harga ?? 'N/A' }}</td>
+                                        <td>{{ $meja->status->nama_status ?? 'N/A' }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>

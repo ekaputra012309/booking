@@ -37,21 +37,24 @@
                             <table id="example1" class="table table-bordered table-striped w-100">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th style="width: 30px">Aksi</th>
+                                        <th style="width: 20px">No</th>
                                         <th>Lantai</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php $no = 1 @endphp
                                     @foreach ($datalantai as $lantai)
                                     <tr>
                                         <td>
                                             <a class="btn btn-xs btn-primary" href="{{ route('lantai.edit', $lantai->id) }}">
-                                                <i class="fas fa-edit"></i> Edit
+                                                <i class="fas fa-edit"></i> 
                                             </a>
                                             <button class="btn btn-xs btn-danger delete-btn" data-id="{{ $lantai->id }}">
-                                                <i class="fas fa-trash"></i> Delete
+                                                <i class="fas fa-trash"></i> 
                                             </button>
                                         </td>
+                                        <td>{{ $no++ }}</td>
                                         <td>{{ $lantai->nama_lantai }}</td>
                                     </tr>
                                     @endforeach

@@ -12,6 +12,12 @@
     <link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('backend/css/adminlte.min.css?v=3.2.0') }}">
 
+    <script src="{{ asset('backend/js/jquery.min.js') }}"></script>
+
+    {{-- sweef alert --}}
+    <link rel="stylesheet" href="{{ asset('backend/css/sweetalert2.min.css') }}">
+    <script src="{{ asset('backend/js/sweetalert2.min.js') }}"></script>
+
     <style>
         #auth {
             height: 100vh;
@@ -58,6 +64,7 @@
 </head>
 
 <body class="bg-light">
+    @include('sweetalert::alert')
     <div id="auth">
         <div class="row h-100">
             <div class="col-lg-4 col-12">
@@ -96,15 +103,19 @@
                                 </div>
                             </div>
                             <div class="col-4">
-                                <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                                <button type="submit" class="btn btn-primary btn-block">Login</button>
                             </div>
                         </div>
                     </form>
+
+                    <div>
+                        Belum punya akun ? <a href="{{ route('signup') }}">Sign Up</a>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-8 d-none d-lg-block">
+            <div class="col-lg-8 d-lg-block">
                 <div id="auth-right">
-
+                    
                 </div>
             </div>
         </div>

@@ -29,7 +29,7 @@
                     </a>
                 </li>
 
-                @if (in_array($role, ['superadmin', 'owner', 'admin']))
+                @if (in_array($role, ['superadmin', 'admin', 'admin']))
                 <li class="nav-header">Master</li>
 
                 <li class="nav-item">
@@ -48,11 +48,16 @@
                                 <p>Meja</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('user.customer') }}" class="nav-link {{ request()->routeIs('user.customer') ? 'active' : '' }}">
+                                <p>Customer</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 @endif
 
-                @if (in_array($role, ['superadmin', 'owner']))
+                @if (in_array($role, ['superadmin', 'admin']))
                 <li class="nav-header">Settings</li>
 
                 <li class="nav-item">
@@ -81,7 +86,7 @@
                         </li>
                         @endif
 
-                        @if (in_array($role, ['superadmin']))
+                        @if (in_array($role, ['superadmin', 'admin']))
                         <li class="nav-item">
                             <a href="{{ route('user.index') }}" class="nav-link {{ request()->routeIs('user.index') ? 'active' : '' }}">
                                 <p>Manage User</p>

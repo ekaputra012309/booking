@@ -8,6 +8,7 @@ use App\Models\Meja;
 use App\Models\Lantai;
 use App\Models\StatusBooking;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Validation\Rule; 
 
 class MejaController extends Controller
 {
@@ -16,8 +17,9 @@ class MejaController extends Controller
         $data = [
             'title' => 'Meja | ',
             'datameja' => Meja::with('user', 'lantai', 'status')
-                                ->get()
-                                ->groupBy('lantai_id'),
+                                ->orderBy('lantai_id', 'ASC')
+                                ->get(),
+                                // ->groupBy('lantai_id'),
         ];
         // dd($data['datameja']);
         return view('backend.meja.index', $data);
@@ -38,16 +40,30 @@ class MejaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_meja' => 'required|string|max:255',
-            'harga' => 'required|numeric',
             'lantai_id' => 'required|exists:lantai,id',
-            'status_id' => 'required|exists:status_booking,id',
-            'user_id' => 'required|exists:users,id', // Adjust as necessary
+            'nama_meja' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('meja')->where(function ($query) use ($request) {
+                    return $query->where('lantai_id', $request->lantai_id);
+                })
+            ],
+            'harga' => 'required|numeric|min:0',
+        ], [
+            'nama_meja.unique' => 'Nama meja sudah ada di lantai yang dipilih.',
         ]);
-        dd($request->all());
+    
+        Meja::create([
+            'lantai_id' => $request->lantai_id,
+            'nama_meja' => $request->nama_meja,
+            'harga' => $request->harga,
+            'status_id' => 1, // Default status
+            'user_id' => auth()->id(),
+        ]);
         // Meja::create($request->all());
-        // Alert::success('Success', 'meja created successfully.')->autoClose(2000);
-        // return redirect()->route('meja.index');
+        Alert::success('Success', 'meja created successfully.')->autoClose(2000);
+        return redirect()->route('meja.index');
     }
 
     public function show(Meja $meja)
