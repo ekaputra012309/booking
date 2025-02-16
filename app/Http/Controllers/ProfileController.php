@@ -30,6 +30,7 @@ class ProfileController extends Controller
         // Validate the incoming request data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
+            'phone' => 'string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $request->user()->id,
         ]);
 

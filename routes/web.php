@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\StatusBookingController;
 use App\Http\Controllers\Backend\LantaiController;
 use App\Http\Controllers\Backend\MejaController;
+use App\Http\Controllers\Backend\TransaksiController;
 
 // Route::get('/', function () {
 //     return ['Laravel' => app()->version()];
@@ -30,6 +31,8 @@ Route::get('/company-profile', [Backend::class, 'editCompany'])->name('companyPr
 Route::put('/company-profile/update', [Backend::class, 'updateCompany'])->name('companyProfile.update');
 
 Route::get('/meja/check-nama-meja', [MejaController::class, 'checkNamaMeja'])->name('meja.checkNamaMeja');
+Route::get('/get-meja-by-lantai', [TransaksiController::class, 'getMejaByLantai'])->name('getMejaByLantai');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -41,6 +44,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('statusbooking', StatusBookingController::class); //statusbooking
     Route::resource('lantai', LantaiController::class); //lantai
     Route::resource('meja', MejaController::class); //meja
+    Route::resource('transaksi', TransaksiController::class); //transaksi
+
+    Route::put('/{transaksi}/approve', [TransaksiController::class, 'approve'])->name('transaksi.approve');
+    Route::put('/{transaksi}/finish', [TransaksiController::class, 'finish'])->name('transaksi.finish');
 });
 
 require __DIR__.'/auth.php';

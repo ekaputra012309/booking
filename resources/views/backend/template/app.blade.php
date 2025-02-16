@@ -52,6 +52,11 @@
     <script src="{{ asset('backend/moment/moment.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('backend/css/daterangepicker/daterangepicker.css') }}">
     <script src="{{ asset('backend/js/daterangepicker/daterangepicker.js') }}"></script>
+    <!-- datetimepicker -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="{{ asset('backend/css/bootstrap-datetimepicker.min.css') }}">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js"></script>
+    <script src="{{ asset('backend/js/bootstrap-datetimepicker.min.js') }}"></script>
 
     <!-- datatable fixcolumn -->
     <link rel="stylesheet" href="https://datatables.net/release-datatables/media/css/dataTables.bootstrap4.css">
@@ -90,6 +95,12 @@
         .input-subtotal {
             min-width: 140px;
         }
+
+        .list-group-item .badge {
+            font-size: 1rem;
+            font-weight: normal;
+        }
+
     </style>
 </head>
 
@@ -104,8 +115,9 @@
             <div class="float-right d-none d-sm-block">
                 <b>Version</b> 1.1.0
             </div>
-            <strong>Copyright &copy; {{ date('Y') >= 2024 ? '2024' : '2024-' . date('Y') }}
-                {{ $companyProfile->name }}
+            <strong>
+                Copyright &copy; {{ date('Y') > 2025 ? '2025-' . date('Y') : '2025' }}
+                <a href="https://dnakonsultan.com/"> {{ config('app.name') }} </a>
             </strong>
             All rights
             reserved.
@@ -130,7 +142,7 @@
                     console.log("Error fetching role name");
                 }
             });
-        });
+        });        
     </script>
 </body>
 

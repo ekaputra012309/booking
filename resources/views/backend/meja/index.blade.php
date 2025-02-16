@@ -48,8 +48,7 @@
                                 <tbody>
                                     @php $no = 1 @endphp
                                     @foreach ($datameja as $meja)
-                                    <tr>
-                                        
+                                    <tr class="{{ $meja->status->id != 1 ? 'bg-warning' : '' }}">
                                         <td>
                                             <a class="btn btn-xs btn-primary" href="{{ route('meja.edit', $meja->id ?? '-') }}">
                                                 <i class="fas fa-edit"></i>

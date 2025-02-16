@@ -21,7 +21,7 @@
         </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
+                
                 <li class="nav-item">
                     <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -29,7 +29,7 @@
                     </a>
                 </li>
 
-                @if (in_array($role, ['superadmin', 'admin', 'admin']))
+                @if (in_array($role, ['superadmin', 'admin']))
                 <li class="nav-header">Master</li>
 
                 <li class="nav-item">
@@ -56,6 +56,21 @@
                     </ul>
                 </li>
                 @endif
+
+                <li class="nav-header">Transaksi</li>
+
+                <li class="nav-item">
+                    <a href="{{ route('transaksi.create') }}" class="nav-link {{ request()->routeIs('transaksi.create') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-cart-plus"></i>
+                        <p>Booking</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('transaksi.index') }}" class="nav-link {{ request()->routeIs('transaksi.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-history"></i>
+                        <p>History Booking</p>
+                    </a>
+                </li>                
 
                 @if (in_array($role, ['superadmin', 'admin']))
                 <li class="nav-header">Settings</li>

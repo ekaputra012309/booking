@@ -52,6 +52,13 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label for="phone">No Telp</label>
+                                        <input id="phone" name="phone" type="text" class="form-control"
+                                            placeholder="Nama Lengkap" value="{{ $user->phone }}" required autofocus
+                                            autocomplete="phone">
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="email">Email</label>
                                         <input type="email" name="email" id="email" class="form-control"
                                             value="{{ $user->email }}" required autocomplete="username">
