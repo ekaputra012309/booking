@@ -65,6 +65,14 @@
                         <p>Booking</p>
                     </a>
                 </li>
+                @if (in_array($role, ['superadmin', 'admin']))
+                <li class="nav-item">
+                    <a href="{{ route('transaksi.approval') }}" class="nav-link {{ request()->routeIs('transaksi.approval') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-check-circle"></i>
+                        <p>Approval</p>
+                    </a>
+                </li>
+                @endif
                 <li class="nav-item">
                     <a href="{{ route('transaksi.index') }}" class="nav-link {{ request()->routeIs('transaksi.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-history"></i>

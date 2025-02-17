@@ -56,5 +56,9 @@ class User extends Authenticatable
         return $this->hasMany(Privilage::class, 'user_id');
     }
 
+    public function transaksi()
+    {
+        return $this->hasMany(TransaksiHeader::class, 'user_id'); 
+    }
 
 }

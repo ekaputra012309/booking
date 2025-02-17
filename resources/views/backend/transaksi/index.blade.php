@@ -25,6 +25,49 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
+                        <div class="card-header">
+                            <form method="GET" action="{{ route('transaksi.index') }}">
+                                <div class="row">
+                                    <!-- Filter by Checkin Date -->
+                                    <div class="col-md-3">
+                                        <label for="checkin">Tanggal Check-in:</label>
+                                        <input type="date" name="checkin" id="checkin" class="form-control" value="{{ request('checkin') }}">
+                                    </div>
+
+                                    <!-- Filter by Status -->
+                                    <div class="col-md-3">
+                                        <label for="status_transaksi">Status Booking:</label>
+                                        <select name="status_transaksi" id="status_transaksi" class="form-control">
+                                            <option value="">-- Semua --</option>
+                                            <option value="1" {{ request('status_transaksi') == '1' ? 'selected' : '' }}>Booking</option>
+                                            <option value="2" {{ request('status_transaksi') == '2' ? 'selected' : '' }}>Selesai Booking</option>
+                                            <option value="3" {{ request('status_transaksi') == '3' ? 'selected' : '' }}>Batal Booking</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Filter by Customer Name -->
+                                    <div class="col-md-3">
+                                        <label for="customer_name">Nama Customer:</label>
+                                        <input type="text" name="customer_name" id="customer_name" class="form-control" placeholder="Cari nama..." value="{{ request('customer_name') }}">
+                                    </div>
+
+                                    <!-- Submit & Reset Buttons -->
+                                    <div class="col-md-3 d-flex align-items-end">
+                                        <button type="submit" class="btn btn-primary mr-2">
+                                            <i class="fas fa-filter"></i> Filter
+                                        </button>
+                                        <a href="{{ route('transaksi.index') }}" class="btn btn-secondary">
+                                            <i class="fas fa-sync"></i> Reset
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        
                         <div class="card-body">
                             <div id="accordion">
                             @if ($datatransaksi->isEmpty())
@@ -33,8 +76,12 @@
                                 </div>
                             @else
                                 @foreach ($datatransaksi as $index => $dt)
-                                    <div class="card 
-                                    {{ $dt->status_transaksi == 1 ? 'card-light' : ($dt->status_transaksi == 2 ? 'card-success' : 'card-danger') }}">
+                                <div class="card 
+                                    {{ $dt->status_transaksi == 1 
+                                        ? ($dt->approveby ? 'card-primary' : 'card-light') 
+                                        : ($dt->status_transaksi == 2 
+                                            ? 'card-success' 
+                                            : 'card-danger') }}">
                                         <div class="card-header">
                                             <h4 class="card-title w-100">
                                                 <a class="d-block w-100" data-toggle="collapse" href="#collapse{{ $index }}">
@@ -59,9 +106,10 @@
                                                     </li>
                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                                         <span><i class="fas fa-tags"></i> Total Bayar</span>
-                                                        <span class="badge badge-light badge-pill">
+                                                        <span class="badge badge-light badge-pill total-bayar" data-total="{{ $dt->detail->sum('harga') }}">
                                                             Rp {{ number_format($dt->detail->sum('harga'), 0, ',', '.') }}
                                                         </span>
+
                                                     </li>
                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                                         <span><i class="fas fa-thumbtack"></i> Lantai & Meja</span>
@@ -106,7 +154,7 @@
                                                         <span class="badge badge-light badge-pill">
                                                             @if (in_array($role, ['superadmin', 'admin']))
                                                             <button class="btn btn-sm btn-success finish-btn 
-                                                            {{ $dt->approveby == '' ? 'd-none' : '' }}" data-id="{{ $dt->id }}">
+                                                            {{ ($dt->approveby == '' || $dt->status_transaksi != 1) ?  'd-none' : '' }}" data-id="{{ $dt->id }}">
                                                                 <i class="fa fa-check-square"></i> Transaksi Selesai
                                                             </button>
                                                             <button class="btn btn-sm btn-success approve-btn 
@@ -137,6 +185,7 @@
     <script>
         $(document).on('click', '.approve-btn', function() {
             var transaksiId = $(this).data('id');
+            var totalBayar = $(this).closest('.card-body').find('.total-bayar').data('total'); // Fetch total bayar
             var url = '{{ route('transaksi.approve', ':id') }}'.replace(':id', transaksiId);
 
             Swal.fire({
@@ -147,11 +196,14 @@
                     step: 1000,
                     required: true
                 },
-                showCancelButton: false,
+                showCancelButton: true,
                 confirmButtonText: 'OK',
                 inputValidator: (value) => {
                     if (!value || value < 0) {
                         return 'DP tidak boleh kosong atau negatif!';
+                    }
+                    if (parseInt(value) > totalBayar) {
+                        return 'DP tidak boleh lebih besar dari total bayar (Rp ' + new Intl.NumberFormat('id-ID').format(totalBayar) + ')!';
                     }
                 }
             }).then((result) => {

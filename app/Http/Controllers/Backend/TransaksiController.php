@@ -14,23 +14,65 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class TransaksiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $role = Privilage::getRoleKodeForAuthenticatedUser();
+
+        // Fetch the filters from the request
+        $checkin = $request->input('checkin');
+        $status = $request->input('status_transaksi');
+        $customerName = $request->input('customer_name');
+
+        // Query for transactions
+        $query = TransaksiHeader::with(['detail', 'detail.lantai', 'detail.meja', 'user']);
+
         if ($role == 'customer') {
-            $trans = TransaksiHeader::with(['detail', 'detail.lantai', 'detail.meja', 'user'])
-                    ->where('user_id', auth()->id())
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-        } else {
-            $trans = TransaksiHeader::with(['detail', 'detail.lantai', 'detail.meja', 'user'])->orderBy('created_at', 'desc')->get();
+            $query->where('user_id', auth()->id());
         }
+
+        // Apply filters if they exist
+        if (!empty($checkin)) {
+            $query->whereDate('checkin', $checkin);
+        }
+
+        if (!empty($status)) {
+            $query->where('status_transaksi', $status);
+        }
+
+        if (!empty($customerName)) {
+            $query->whereHas('user', function ($q) use ($customerName) {
+                $q->where('name', 'like', '%' . $customerName . '%');
+            });
+        }
+
+        $trans = $query->orderBy('created_at', 'desc')->get();
+
         $data = [
             'title' => 'Histori Transaksi | ',
             'datatransaksi' => $trans,
+            'filters' => compact('checkin', 'status', 'customerName')
+        ];
+
+        return view('backend.transaksi.index', $data);
+    }
+
+
+    public function approval()
+    {
+        $trans = TransaksiHeader::with(['detail', 'detail.lantai', 'detail.meja', 'user'])
+                                ->where('status_transaksi', 1)
+                                ->where(function ($query) {
+                                    $query->whereNull('approveby') // For NULL values
+                                          ->orWhere('approveby', ''); // For empty string values
+                                })
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+        $data = [
+            'title' => 'Approval | ',
+            'datatransaksi' => $trans,
         ];
         // dd($data['datatransaksi']);
-        return view('backend.transaksi.index', $data);
+        return view('backend.transaksi.approval', $data);
     }
 
     private function generateInvoiceNumber()
@@ -168,6 +210,15 @@ class TransaksiController extends Controller
             'status_transaksi' => 2,
             'finish_time' => date('Y-m-d H:i:s'),
         ]);
+        
+        $details = $transaksi->detail;
+
+        // Update status_id in meja table
+        foreach ($details as $detail) {
+            if ($detail->meja) {
+                $detail->meja->update(['status_id' => 1]); // Change 0 to the desired status
+            }
+        }
 
         return response()->json(['success' => true]);
     }

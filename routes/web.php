@@ -33,6 +33,7 @@ Route::put('/company-profile/update', [Backend::class, 'updateCompany'])->name('
 Route::get('/meja/check-nama-meja', [MejaController::class, 'checkNamaMeja'])->name('meja.checkNamaMeja');
 Route::get('/get-meja-by-lantai', [TransaksiController::class, 'getMejaByLantai'])->name('getMejaByLantai');
 
+Route::get('/transaksi/approval', [TransaksiController::class, 'approval'])->name('transaksi.approval');
 
 Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

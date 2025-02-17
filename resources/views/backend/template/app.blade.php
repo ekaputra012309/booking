@@ -116,7 +116,7 @@
                 <b>Version</b> 1.1.0
             </div>
             <strong>
-                Copyright &copy; {{ date('Y') > 2025 ? '2025-' . date('Y') : '2025' }}
+                &copy; {{ date('Y') > 2025 ? '2025-' . date('Y') : '2025' }}
                 <a href="https://dnakonsultan.com/"> {{ config('app.name') }} </a>
             </strong>
             All rights

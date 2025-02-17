@@ -9,7 +9,7 @@ class TransaksiHeader extends Model
 {
     use HasFactory;
     protected $table = 'transaksi_header';
-    protected $fillable = ['user_id', 'invoice_number', 'status_transaksi', 'checkin', 'checkout', 'approve_time', 'approveby', 'dp'];
+    protected $fillable = ['user_id', 'invoice_number', 'status_transaksi', 'checkin', 'checkout', 'finish_time', 'approve_time', 'approveby', 'dp'];
 
     public function user()
     {

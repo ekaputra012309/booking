@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\TransaksiHeader;
+use App\Models\User;
 use App\Models\CompanyProfile;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -34,14 +36,28 @@ class Backend extends Controller
         $today = Carbon::today();
         $monthlyStart = $today->copy()->startOfMonth();
         $yearlyStart = $today->copy()->startOfYear();
-        
+
+        // Fetch data for dashboard cards
+        $bookingHariIni = TransaksiHeader::whereDate('created_at', $today)->count();
+        $totalCustomer = User::where('id', '!=', auth()->id())
+                            ->where('id', '!=', 1)
+                            ->whereHas('privilages', function ($query) {
+                                $query->where('role_id', 4);
+                            })
+                            ->count();
+        $totalBooking = TransaksiHeader::count();
+        $batalBooking = TransaksiHeader::where('status_transaksi', 3)->count(); // Assuming status 3 means "Batal Booking"
+
         $data = [
-            'title' => 'Dashboard | ',            
+            'title' => 'Dashboard | ',
+            'bookingHariIni' => $bookingHariIni,
+            'totalCustomer' => $totalCustomer,
+            'totalBooking' => $totalBooking,
+            'batalBooking' => $batalBooking,
         ];
-        // dd($data['databarang']);
+
         return view('backend.dashboard', $data);
     }
-
 
     public function profile(Request $request)
     {
