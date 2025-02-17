@@ -15,7 +15,10 @@ class PrivilageController extends Controller
     public function index()
     {
         $privilage = Privilage::with('user', 'role')
-            ->where('role_id', '!=', 1)
+            ->where(function($query) {
+                $query->where('role_id', '!=', 1)
+                    ->where('role_id', '!=', 4);
+            })
             ->get();
         $data = array(
             'title' => 'Privilage | ',
@@ -39,6 +42,9 @@ class PrivilageController extends Controller
 
         $user = User::where('id', '!=', 1)
             ->whereNotIn('id', $excludedUserIds)
+            ->whereDoesntHave('privilages', function ($query) {
+                $query->where('role_id', 4); // Exclude customers
+            })
             ->get();
         $role = Role::where('kode_role', '!=', 'superadmin')->get();
 
